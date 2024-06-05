@@ -246,7 +246,7 @@ class DigrapheNonPondere:
                 cfc.append(self.explorer_le_graphe_en_profondeur_en_partant_du_sommet(courant, visites))
         return cfc
 
-    def explorer_en_largeur(self, depart=0):
+    def explorer_en_largeur_en_partant_du_sommet(self, depart=0):
         predecesseurs = [None for _ in range(self.num_vertices)]
         visites = [False for _ in range(self.num_vertices)]
         visites[depart] = True
@@ -256,6 +256,7 @@ class DigrapheNonPondere:
             for voisin in self.lists[courant]:
                 if not visites[voisin]:
                     pile.append(voisin)
+                    visites[voisin] = True
                     predecesseurs[voisin] = courant
         return predecesseurs
 

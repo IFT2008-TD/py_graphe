@@ -89,6 +89,15 @@ class DigrapheNonPondereAlgorithmesTest(unittest.TestCase):
     def test_kosaraju_68c(self):
         self.assertEqual([[5, 2, 4, 1], [3], [0]], self.g68c.kosaraju())
 
+    def test_explorer_en_largeur_le_graphe_21(self):
+        self.assertEqual([None, 0], self.g21.explorer_en_largeur_en_partant_du_sommet(0))
+
+    def test_explorer_en_largeur_le_graphe_68a(self):
+        self.assertEqual([None, 0, 1, 0, 1, 1], self.g68a.explorer_en_largeur_en_partant_du_sommet(0))
+
+    def test_explorer_en_largeur_le_graphe_68c(self):
+        self.assertEqual([None, 0, 1, 0, 1, 2], self.g68c.explorer_en_largeur_en_partant_du_sommet(0))
+
 
 
 if __name__ == '__main__':
