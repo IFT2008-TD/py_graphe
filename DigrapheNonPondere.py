@@ -1,3 +1,7 @@
+import sys
+from typing import List
+
+
 class DigrapheNonPondere:
     """
     Modélise un digraphe non-pondéré, soit un ensemble de sommets, représentés par des numéros consécutifs, reliés
@@ -21,7 +25,7 @@ class DigrapheNonPondere:
             self.num_vertices = 0
         else:
             self.num_vertices = vertices
-        self.lists = [[] for _ in range(self.num_vertices)]
+        self.lists: List[List[int]] = [[] for _ in range(self.num_vertices)]
         if edges is not None:
             for edge in edges:
                 self.lists[edge[0]].append(edge[1])
@@ -182,6 +186,7 @@ class DigrapheNonPondere:
         :param visites: Liste de bool contenant les sommets déjà visités, lors d'appels précédents par exemple.
         :return: La liste des sommets visités en ordre d'abandon.
         """
+        assert(self._numero_de_sommet_est_valide(sommet))
         abandons = []
         self._aux_explorer_en_profondeur_le_sommet(sommet, visites, abandons)
         assert(len(abandons) <= self.num_vertices)
@@ -247,18 +252,28 @@ class DigrapheNonPondere:
         return cfc
 
     def explorer_en_largeur_en_partant_du_sommet(self, depart=0):
+        """
+        Exploration en largeur (BFS)
+        :param depart: Numéro du sommet de départ
+        :return: Liste des prédécesseurs, et longueur du chemin pour chaque sommet.  Si un sommet est inaccessible,
+        le prédécesseur sera None, et la distance sera sys.maxsize
+        """
         predecesseurs = [None for _ in range(self.num_vertices)]
+        distances = [sys.maxsize for _ in range(self.num_vertices)]
+        distances[depart] = 0
         visites = [False for _ in range(self.num_vertices)]
         visites[depart] = True
-        pile = [depart]
-        while pile:
-            courant = pile.pop(0)
+        en_attente = [depart]
+        while en_attente:
+            courant = en_attente.pop(0)
+            distance = distances[courant] + 1
             for voisin in self.lists[courant]:
                 if not visites[voisin]:
-                    pile.append(voisin)
+                    en_attente.append(voisin)
                     visites[voisin] = True
                     predecesseurs[voisin] = courant
-        return predecesseurs
+                    distances[voisin] = distance
+        return predecesseurs, distances
 
 
 
